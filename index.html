@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun! 🎂</title>
+    <link rel="icon" type="jpeg" href="../gambargua/WhatsApp Image 2026-03-03 at 13.58.511.jpeg">
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .section { display: none; }
+        .section.active { display: block; }
+        .theme-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; }
+        .theme-option { padding: 12px 20px; border: none; border-radius: 25px; color: white; font-weight: 600; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+        .theme-option:hover { transform: scale(1.1); box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+        .theme-option.selected { border: 3px solid #fff; transform: scale(1.1); }
+        /* Heart Shape Photo Grid */
+        .heart-photos { position: relative; width: 350px; height: 350px; margin: 30px auto; }
+        .heart-photo { position: absolute; width: 90px; height: 90px; border-radius: 50%; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: transform 0.3s; }
+        .heart-photo:hover { transform: scale(1.1); z-index: 10; }
+        .heart-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .heart-photo:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+        .heart-photo:nth-child(2) { top: 15%; left: 25%; }
+        .heart-photo:nth-child(3) { top: 15%; right: 25%; }
+        .heart-photo:nth-child(4) { top: 35%; left: 5%; }
+        .heart-photo:nth-child(5) { top: 35%; right: 5%; }
+        .heart-photo:nth-child(6) { top: 60%; left: 20%; }
+        .heart-photo:nth-child(7) { top: 60%; right: 20%; }
+        .heart-photo:nth-child(8) { top: 80%; left: 50%; transform: translateX(-50%); }
+        /* Small Heart Shape - 4 photos */
+        .small-heart-photos { position: relative; width: 250px; height: 250px; margin: 20px auto; }
+        .small-heart-photo { position: absolute; width: 70px; height: 70px; border-radius: 50%; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: transform 0.3s; }
+        .small-heart-photo:hover { transform: scale(1.1); z-index: 10; }
+        .small-heart-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .small-heart-photo:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+        .small-heart-photo:nth-child(2) { top: 30%; left: 5%; }
+        .small-heart-photo:nth-child(3) { top: 30%; right: 5%; }
+        .small-heart-photo:nth-child(4) { top: 65%; left: 50%; transform: translateX(-50%); }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <h1 class="loading-title">🎉 Ada Kejutan Untukmu! 🎂</h1>
+            <div class="music-selection" id="musicSelection">
+                <img src="../gambargua/WhatsApp Image 2026-03-03 at 13.57.50 (1).jpeg" alt="Foto" style="width: 150px; height: 150px; border-radius: 50%; margin-bottom: 20px; border: 5px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                <p class="music-prompt">Pilih musik favoritmu 🎵</p>
+                <div class="music-options">
+                    <button class="music-option" onclick="selectMusic('../multimedia/Iqbaal Ramadhan - Rindu Sendiri (Lirik Video).mp3')">🎵 Iqbaal - Rindu Sendiri</button>
+                    <button class="music-option" onclick="selectMusic('../multimedia/KOMANG - RAIM LAODE LYRIC OFFICIAL.mp3')">🎵 KOMANG - Raim Laode</button>
+                    <button class="music-option" onclick="selectMusic('../multimedia/Nadhif Basalamah - bergema sampai selamanya (Official Lyric Video).mp3')">🎵 Nadhif - Bergema</button>
+                    <button class="music-option" onclick="selectMusic('../multimedia/The 1975 - About You (Official).mp3')">🎵 The 1975 - About You</button>
+                </div>
+                <p class="music-prompt" style="margin-top: 30px;">Pilih tema warna 🎨</p>
+                <div class="theme-options">
+                    <button class="theme-option" onclick="selectTheme('pink')" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">🌸 Pink</button>
+                    <button class="theme-option" onclick="selectTheme('blue')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">💙 Blue</button>
+                    <button class="theme-option" onclick="selectTheme('green')" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">💚 Green</button>
+                    <button class="theme-option" onclick="selectTheme('purple')" style="background: linear-gradient(135deg, #cc2b5e 0%, #753a88 100%);">💜 Purple</button>
+                    <button class="theme-option" onclick="selectTheme('gold')" style="background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);">✨ Gold</button>
+                </div>
+            </div>
+            <button class="start-btn" id="startBtn" onclick="startExperience()" style="display:none;">Masuk ke Kejutan 🎁</button>
+        </div>
+    </div>
+
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Balloons -->
+    <div class="balloons" id="balloons"></div>
+
+    <!-- Confetti -->
+    <div class="confetti-container" id="confetti"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Section 1: Main Birthday -->
+        <div class="section active" id="section-main">
+            <header>
+                <h1>🎉 Selamat Ulang Tahun! 🎂</h1>
+                <p class="subtitle">Semoga panjang umur, sehat selalu, dan bahagia selalu!</p>
+                <div class="age">HBD</div>
+            </header>
+
+            <!-- Cake Section -->
+            <div class="cake-section">
+                <div class="cake" id="cake" onclick="blowCandle()">
+                    <div class="candle" id="candle">
+                        <div class="candle-glow" id="candleGlow"></div>
+                        <div class="flame" id="flame"></div>
+                        <div class="blow-hint" id="blowHint">💨 Klik & tiup lilinnya!</div>
+                    </div>
+                    <div class="cake-top">
+                        <div class="cake-decor"></div>
+                        <div class="cake-decor"></div>
+                        <div class="cake-decor"></div>
+                    </div>
+                    <div class="cake-body">
+                        <div class="cake-decor"></div>
+                        <div class="cake-decor"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo Section -->
+            <div class="photo-section">
+                <img src="../gambargua/WhatsApp Image 2026-03-03 at 13.58.51 (1).jpeg" alt="Foto Ulang Tahun" class="birthday-photo" id="birthdayPhoto">
+                <p class="photo-name" id="birthdayName">Dila</p>
+            </div>
+
+            <!-- Timer Section -->
+            <div class="timer-section">
+                <h2>⏰ Hitung Mundur Ulang Tahun</h2>
+                <div class="timer" id="timer">
+                    <div class="timer-box"><span class="number" id="days">0</span><span class="label">Hari</span></div>
+                    <div class="timer-box"><span class="number" id="hours">0</span><span class="label">Jam</span></div>
+                    <div class="timer-box"><span class="number" id="minutes">0</span><span class="label">Menit</span></div>
+                    <div class="timer-box"><span class="number" id="seconds">0</span><span class="label">Detik</span></div>
+                </div>
+                <div class="birthday-message" id="birthdayMessage">🎉 HAPPY BIRTHDAY! 🎉</div>
+            </div>
+
+            <!-- Message Section -->
+            <div class="message-section">
+                <h2>💌 Pesan Spesial</h2>
+                <div class="message-box">
+                    <p>"di hari yang sangat spesial ini,usia kamu bertambah satu taun menjadi 15, ini adalah hari kebnggan kamu, akuu sangat senang bertemu dengan mu, maka aku ucapkan,selamat ulang tahunnn, SEMOGA PANJANG UMUR!🎈<br><br>hari ini adalah hari yang sangat spesial karena ada satu bayi kecil yang imutt yang lucu, yang akhirnya meranggak dewasa, kamu adalah wanita favorite ku setelah ibuku,kamu benar benar wanita yang strong yang spesial, dan hari inii ingat kamu benar benar bisa membuatku kagum, kamu akhir nya bisa bertahan dengan ku selama 1 tahun lebih lamanya, aku sangatt senang, semoga kita bisa bertahan sampai tujuan kita tercapai, AMMMMMMIIIIINNNNN.<br><br>HEYY SAYANGG DILAAA, kamuu mauu kuee ulang tahun xixixi, di sini banyak banget kue ulang tahun untuk mu,kamu bisa pilih nanti aku beliii XIXIXIXI, al recycligh kamu masih bertahann yahhh moga sampai ke umur yang memungkinkan kamu sukses,sehat selalu yahh sayanggg mwahhhhh!<br><br><strong>🎂 Selamat Ulang Tahun! 🎂</strong>"</p>
+                </div>
+            </div>
+
+            <!-- Gallery Section -->
+            <div class="gallery-section">
+                <h2>📸 Momen Indah</h2>
+                <div class="gallery">
+                    <div class="gallery-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.03.08.jpeg" alt="Foto 1"></div>
+                    <div class="gallery-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.03.08 (3).jpeg" alt="Foto 2"></div>
+                    <div class="gallery-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.03.08 (4).jpeg" alt="Foto 3"></div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="love-section" style="margin-top: 30px;">
+                <div class="love-title" onclick="showSection('section-love')"><span>💕</span> I Love You <span>💕</span></div>
+            </div>
+            <div class="love-section">
+                <div class="love-title" onclick="showSection('section-letter')"><span>💌</span> Surat Untukmu <span>💌</span></div>
+            </div>
+            <div class="love-section">
+                <div class="love-title" onclick="showSection('section-rival')"><span>👤</span> Rival <span>👤</span></div>
+            </div>
+            <div class="love-section">
+                <div class="love-title" onclick="showSection('section-dila')"><span>👧</span> Dila <span>👧</span></div>
+            </div>
+
+            <footer>
+                <p>DARII AKUU RIVAL SEMANGATT SAYANGGG 💕</p>
+                <p>© 2026 - Hari Spesial Ini</p>
+            </footer>
+        </div>
+
+        <!-- Section 2: I Love You (BENTUK LOVE - 8 foto) -->
+        <div class="section" id="section-love">
+            <div class="love-page" style="text-align: center; max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+                <h1 class="love-message">💕 I Love You 💕</h1>
+                <div class="love-note">
+                    <p>"Dila, sejak pertama kali aku mengenalmu, aku merasa keberkahan yang luar biasa dalam hidupku. Senyummu membuat hariku menjadi lebih cerah, tawamu membuatku merasa paling bahagia di dunia ini.<br><br>Aku sangat menyukai caramu memperlakukan orang-orang di sekitarmu dengan kebaikan. Aku menyukai cara kamu tertawa pada hal-hal sederhana. Yang paling aku suka adalah hatimu yang begitu baik dan tulus.<br><br><strong>Aku suka kamu, Dila! ❤️</strong>"</p>
+                </div>
+                <div class="love-photo-grid">
+                    <div class="love-photo-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 13.58.51 (3).jpeg" alt="1"></div>
+            <div class="love-photo-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 13.58.51 (4).jpeg" alt="2"></div>
+            <div class="love-photo-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 13.58.51 (5).jpeg" alt="3"></div>
+            <div class="love-photo-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 13.58.51 (7).jpeg" alt="4"></div>
+            <div class="love-photo-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 13.58.51.jpeg" alt="5"></div>
+            <div class="love-photo-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 13.57.50 (33).jpeg" alt="6"></div>
+            <div class="love-photo-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.03.08 (5).jpeg" alt="7"></div>
+            <div class="love-photo-item"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.03.08 (1).jpeg" alt="8"></div>
+                </div>
+                <button class="back-btn" onclick="showSection('section-main')" style="background: linear-gradient(135deg, #ff6b6b, #ffa502); color: white; padding: 15px 30px; border-radius: 50px; border: none; font-weight: 600; margin-top: 20px; cursor: pointer;">← Kembali</button>
+            </div>
+        </div>
+
+        <!-- Section 3: Letter -->
+        <div class="section" id="section-letter">
+            <div class="letter-section">
+                <div class="letter-container">
+                    <h2>💌 Surat Untukmu</h2>
+                    <div class="letter-paper">
+                        <div class="letter-content">
+                            <p>"Happy Birthday, Dila! 🎂<br><br>Di hari ulang tahunmu yang ke-15 ini, aku ingin mengucapkan selamat ulang tahun yang paling spesial. Selamat panjang umur, sehat selalu, dan bahagia selalu.<br><br>saran aku sih kamu bisa merubah sikap kamu lebih baik lagi,aku harapp nanti kamu lebih pintar lagi agar bisa banggain orangtua kamu nanti aminnnnnn, semogaa tercapayy yaa sayangggg.<br><br>akuu jugaa mauu kamuu suksess jadii aku mauu kamuu banyakin belajar yahh,berubahh dari yang sebelumnya sampai yang paling sempurna,memang manusia tidak ada yang di ciptakan sempurna tapii kamuu di mata aku sangat sempurmaa 💕<br><strong>Dari seseorang yang sangat menghargaiimu dan mencintaimu</strong>"</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <button class="back-btn" onclick="showSection('section-main')" style="background: linear-gradient(135deg, #ff6b6b, #ffa502); color: white; padding: 15px 30px; border-radius: 50px; border: none; font-weight: 600; margin-top: 20px; cursor: pointer;">← Kembali</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Rival (BENTUK LOVE - 4 foto) -->
+        <div class="section" id="section-rival">
+            <div class="profile-page" style="text-align: center; max-width: 900px; margin: 0 auto; padding: 40px 20px;">
+                <h1 class="profile-title">💕 Rival 💕</h1>
+                <div class="profile-section">
+                    <h2>📸 Foto-Foto</h2>
+                    <div class="small-heart-photos">
+                        <div class="small-heart-photo"><img src="../gambargua/WhatsApp Image 2026-03-03 at 13.57.50 (2).jpeg" alt="1"></div>
+                        <div class="small-heart-photo"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.03.08 (3).jpeg" alt="2"></div>
+                        <div class="small-heart-photo"><img src="../gambargua/WhatsApp Image 2026-03-03 at 13.57.50 (19).jpeg" alt="3"></div>
+                        <div class="small-heart-photo"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.29.15.jpeg" alt="4"></div>
+                    </div>
+                </div>
+                <div class="profile-section">
+            <h2>💌 maaf</h2>
+            <p>
+                "dilaa aku mintaa maaf yah aku nyusahin kamu, aku minta maaf ga pernah bikin kamu bahagia, aku bener bener minta maaf karen aku kamu jadi ga se bagus dulu,aku minta maaf aku ga seganteng dan se effort mantan kamu dulu, maaf aku ga perhatian akuu selalu bikin kamu sedihh.
+                akuu mintaa maaff karenaa aku sukaa bikin kamu marah, ga tenang.
+                aku juga minta maaf fisik aku kurang,aku jelek, banyakk bangett kurang nyaa.<br><br>
+                maafin akuu yahhh! ❤️"
+            </p>
+        </div>
+        
+        <div class="profile-section">
+            <h2>💌 trimaksih</h2>
+            <p>
+                "dila trimakasih udah jadi yang terbaik di hidup aku selama ini, makasih udah ceita banyak hal tentang kamu ke akuu selamaa berhubungan bersama.
+                dila makasihh udahh menjadi tempat ternyaman ku buat mengeluh,bercerita,dansaling memberikan fedback.
+                dila maksih udah punya sejarah dengan ku,nantii akan tertulis di buku sejarah jika kita benar benar ketemu di satu tujuan nantinya.
+                trimaksihh udah rispack kepada diriku,baik itu sikap ku,ataupun fisik ku,trimaksih yahhhh.<br><br>
+                trimakasihhhhh! 💕"
+            </p>
+        </div>
+        
+        <div class="profile-section">
+            <h2>💌 harapan</h2>
+            <p>
+                "akuu harapp aku bisa menjadi yang terbaik di hidupmu dan menjadi pria di dalam keluargamu,aku harap akulah pria yang kamu mau dan kamu banggakan,aku harapp kamu akan terus mencitaikuu dan sehat untuk kuu.
+                aku berharap hubungan ini bisa langgeng, aku harap kita bisa bertemu tatap muka dan bisa bercerita dengan kesenangan yang begitu luar biasa, trimaksihh sayangkuu dilaa
+                aku harap kita sukses bersama dan membangun keluarga yang begitu istimewa di suatu hari nantiii!<br><br>
+                semogaa tercapaiii aminnnn! 🌟"
+            </p>
+        </div>
+                <button class="back-btn" onclick="showSection('section-main')" style="background: linear-gradient(135deg, #ff6b6b, #ffa502); color: white; padding: 15px 30px; border-radius: 50px; border: none; font-weight: 600; margin-top: 20px; cursor: pointer;">← Kembali</button>
+            </div>
+        </div>
+
+        <!-- Section 5: Dila (BENTUK LOVE - 4 foto) -->
+        <div class="section" id="section-dila">
+            <div class="profile-page" style="text-align: center; max-width: 900px; margin: 0 auto; padding: 40px 20px;">
+                <h1 class="profile-title">💕 Dila 💕</h1>
+                <div class="profile-section">
+                    <h2>📸 Foto-Foto</h2>
+                    <div class="small-heart-photos">
+                        <div class="small-heart-photo"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.28.47 (1).jpeg" alt="1"></div>
+                        <div class="small-heart-photo"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.28.47 (2).jpeg" alt="2"></div>
+                        <div class="small-heart-photo"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.28.47.jpeg" alt="3"></div>
+                        <div class="small-heart-photo"><img src="../gambargua/WhatsApp Image 2026-03-03 at 14.28.48.jpeg" alt="4"></div>
+                    </div>
+                </div>
+               <div class="profile-section">
+            <h2>💌 Surat 1</h2>
+            <p>
+                "Dila, kamu adalah seseorang yang sangat istimewa dalam hidupku. 
+                Setiap hari bersamamu adalah anugerah yang tidak terukur. 
+                Senyummu membuat segalanya terasa mungkin,waloupun jarak kita jauh tapi kamu sangat dekat di hatiku,aku benar benar bangga memiliki mu sayangku dila,kou ciptaan tuhan yang sempurna, makasihhh udahhh bersama kuuuu<br><br>
+                Aku sangat menyukaimu! ❤️"
+            </p>
+        </div>
+        
+        <div class="profile-section">
+            <h2>💌 Surat 2</h2>
+            <p>
+                "Dila, terima kasih sudah ada dalam hidupku. 
+                Kamu membuat hariku lebih bermakna dengan kehadiranmu.
+                Setiap momen bersamamu adalah kenangan yang akan kuhargai selamanya,dari awal kita ketemu sampai nantii kita tua, semoga hubungan kita langgeng sampai tua,aku ingin bersama mu siti fadilah tasyaa kamu adalah wanita terhebat yang ku temui kedua setelah ibuku, semoga kita akan senantiasa hidup bersamaa.<br><br>
+                Aku sayang kamu! 💕"
+            </p>
+        </div>
+        
+        <div class="profile-section">
+            <h2>💌 Surat 3</h2>
+            <p>
+                "Dila, kamu adalah motivasi terbesarku. 
+                Denganmu, aku merasa bisa menghadapi apapun.
+                Selamat menikmati setiap momen indah dalam hidupmu,aku akan terus menemanimu siti fadilah tasya, aku akan mengsupport kamu sampai kala kamu sukses di masa depan dengan ku amminnnn!<br><br>
+                Aku selalu mendukungmu! 🌟"
+            </p>
+        </div>
+                <button class="back-btn" onclick="showSection('section-main')" style="background: linear-gradient(135deg, #ff6b6b, #ffa502); color: white; padding: 15px 30px; border-radius: 50px; border: none; font-weight: 600; margin-top: 20px; cursor: pointer;">← Kembali</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Music Button -->
+    <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+        <span id="musicIcon">🎵</span>
+    </button>
+
+    <!-- Audio -->
+    <audio id="birthdayMusic" loop>
+        <source src="../multimedia/Iqbaal Ramadhan - Rindu Sendiri (Lirik Video).mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        let selectedMusicSrc = '../multimedia/Iqbaal Ramadhan - Rindu Sendiri (Lirik Video).mp3';
+        let candleBlown = false;
+        
+        const themes = {
+            pink: { bg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%)', primary: '#ff6b6b', secondary: '#ffa502' },
+            blue: { bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', primary: '#667eea', secondary: '#764ba2' },
+            green: { bg: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', primary: '#11998e', secondary: '#38ef7d' },
+            purple: { bg: 'linear-gradient(135deg, #cc2b5e 0%, #753a88 100%)', primary: '#cc2b5e', secondary: '#753a88' },
+            gold: { bg: 'linear-gradient(135deg, #f7971e 0%, #ffd200 100%)', primary: '#f7971e', secondary: '#ffd200' }
+        };
+
+        function selectTheme(themeName) {
+            const theme = themes[themeName];
+            localStorage.setItem('selectedTheme', themeName);
+            sessionStorage.setItem('selectedTheme', themeName);
+            document.body.style.background = theme.bg;
+            const buttons = document.querySelectorAll('.theme-option');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick').includes(themeName)) {
+                    btn.classList.add('selected');
+                    btn.style.border = '3px solid #fff';
+                    btn.style.transform = 'scale(1.1)';
+                } else {
+                    btn.classList.remove('selected');
+                    btn.style.border = 'none';
+                    btn.style.transform = 'scale(1)';
+                }
+            });
+            document.getElementById('startBtn').style.display = 'inline-block';
+        }
+
+        function selectMusic(musicSrc) {
+            selectedMusicSrc = musicSrc;
+            localStorage.setItem('selectedMusic', musicSrc);
+            sessionStorage.setItem('selectedMusic', musicSrc);
+            const audio = document.getElementById('birthdayMusic');
+            audio.src = musicSrc;
+            const buttons = document.querySelectorAll('.music-option');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick').includes(musicSrc)) {
+                    btn.classList.add('selected');
+                    btn.innerHTML = '❤ ' + btn.innerHTML.substring(2);
+                } else {
+                    btn.classList.remove('selected');
+                    btn.innerHTML = '🎵 ' + btn.innerHTML.substring(2);
+                }
+            });
+            document.getElementById('startBtn').style.display = 'inline-block';
+            audio.play().catch(function(error) { console.log("Autoplay blocked."); });
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => { section.classList.remove('active'); });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function createParticles() {
+            const particleContainer = document.getElementById('particles');
+            const colors = ['#ff6b6b', '#ffd700', '#4ecdc4', '#ff9a9e', '#a8e6cf'];
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.width = (Math.random() * 10 + 5) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDuration = (15 + Math.random() * 15) + 's';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particleContainer.appendChild(particle);
+            }
+        }
+
+        function createBalloons() {
+            const balloonContainer = document.getElementById('balloons');
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff9a9e', '#a8e6cf', '#dda0dd', '#87ceeb'];
+            for (let i = 0; i < 30; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.animationDuration = (15 + Math.random() * 10) + 's';
+                balloon.style.animationDelay = Math.random() * 10 + 's';
+                balloonContainer.appendChild(balloon);
+            }
+        }
+
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff9a9e', '#a8e6cf', '#dda0dd'];
+            const shapes = ['square', 'circle'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (4 + Math.random() * 4) + 's';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confetti.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)] === 'circle' ? '50%' : '0';
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        function blowCandle() {
+            if (candleBlown) return;
+            const flame = document.getElementById('flame');
+            const candleGlow = document.getElementById('candleGlow');
+            const candle = document.getElementById('candle');
+            const blowHint = document.getElementById('blowHint');
+            flame.classList.add('blown-out');
+            candleGlow.classList.add('blown-out');
+            candle.classList.add('blown-out');
+            blowHint.style.display = 'none';
+            candleBlown = true;
+            createCelebrationConfetti();
+        }
+
+        function createCelebrationConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#ff9a9e', '#a8e6cf'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = '50%';
+                confetti.style.top = '50%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.width = (Math.random() * 15 + 10) + 'px';
+                confetti.style.height = (Math.random() * 15 + 10) + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        function startExperience() {
+            document.getElementById('loadingScreen').classList.add('hidden');
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        const birthdayDate = new Date('March 4, 2026 00:00:00').getTime();
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = birthdayDate - now;
+            if (distance < 0) {
+                const nextBirthday = new Date('March 4, 2027 00:00:00').getTime();
+                const nextDistance = nextBirthday - now;
+                const days = Math.floor(nextDistance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((nextDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((nextDistance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((nextDistance % (1000 * 60)) / 1000);
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+                return;
+            }
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+
+        let isPlaying = true;
+        const music = document.getElementById('birthdayMusic');
+        const musicIcon = document.getElementById('musicIcon');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.textContent = '🎵';
+            } else {
+                music.play().catch(function(error) { console.log("Autoplay blocked."); });
+                musicIcon.textContent = '🎶';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        createParticles();
+        createBalloons();
+        createConfetti();
+    </script>
+</body>
+</html>
